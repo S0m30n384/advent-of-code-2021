@@ -26,30 +26,6 @@ fun main() {
     println(part2(input))
 }
 
-fun part1(input: List<Int>): Int {
-    var depthIncreaseCounter = 0
-    var previousMeasurement = input.first()
+fun part1(input: List<Int>) = input.zipWithNext().count { (a, b) -> b > a }
 
-    for (index in 1..input.lastIndex) {
-        val currentMeasurement = input[index]
-        if (currentMeasurement > previousMeasurement) depthIncreaseCounter++
-        previousMeasurement = currentMeasurement
-    }
-
-    return depthIncreaseCounter
-}
-
-fun part2(input: List<Int>): Int {
-    var depthIncreaseCounter = 0
-    var previousMeasurement = measureDepth(input, 0, PART2_SLIDING_WINDOW_SIZE)
-
-    for (i in 1..input.size - PART2_SLIDING_WINDOW_SIZE) {
-        val currentMeasurement = measureDepth(input, i, i + PART2_SLIDING_WINDOW_SIZE)
-        if (currentMeasurement > previousMeasurement) depthIncreaseCounter++
-        previousMeasurement = currentMeasurement
-    }
-
-    return depthIncreaseCounter
-}
-
-fun measureDepth(input: List<Int>, startIndex: Int, endIndex: Int) = input.subList(startIndex, endIndex).sum()
+fun part2(input: List<Int>) = input.windowed(PART2_SLIDING_WINDOW_SIZE, 1).zipWithNext().count { (a, b) -> b.sum() > a.sum() }
