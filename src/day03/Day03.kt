@@ -41,20 +41,29 @@ fun main() {
     println(part2(input))
 }
 
+fun invertDataDimension(input: List<String>): MutableList<MutableList<Char>> {
+    val data = mutableListOf<MutableList<Char>>()
+    for (i in 0 until input.maxOf { it.length }) {
+        data.add(mutableListOf())
+    }
+    input.forEach {
+        it.toCharArray().forEachIndexed { index, c ->
+            data[index].add(c)
+        }
+    }
+    return data
+}
+
 fun part1(input: List<String>): Int {
+    val mostCommonBitString = invertDataDimension(input).map {
+        val partition = it.partition { c -> c == '1' }
+        if (partition.first.size > partition.second.size) '1' else '0'
+    }.joinToString("")
 
-    val maxLengthOfInput = input.maxOf { it.length }
-    val sumList = createSumList(input, maxLengthOfInput)
-
-    val charArray = CharArray(maxLengthOfInput)
-
-    sumList.forEachIndexed { index, it -> if (it > input.size / 2) charArray[index] = '1' else charArray[index] = '0' }
-
-    val gammaRate = charArray.concatToString().toInt(2)
-    val epsilonRate = inverse(charArray.concatToString()).toInt(2)
+    val gammaRate = mostCommonBitString.toInt(2)
+    val epsilonRate = inverse(mostCommonBitString).toInt(2)
 
     return gammaRate * epsilonRate
-
 }
 
 fun part2(input: List<String>): Int {
