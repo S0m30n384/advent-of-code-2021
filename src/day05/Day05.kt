@@ -48,7 +48,11 @@ fun initializeDiagram(size: Int): MutableList<MutableList<Int>> {
     return diagram
 }
 
-fun part1(input: List<Line>): Int {
+fun part1(input: List<Line>) = countIntersectingLines(input)
+
+fun part2(input: List<Line>) = countIntersectingLines(input, true)
+
+fun countIntersectingLines(input: List<Line>, considerDiagonalLines: Boolean = false): Int {
     val diagram = initializeDiagram(
         maxOf(input.maxOf { it.beginning.first },
             input.maxOf { it.beginning.second },
@@ -66,32 +70,7 @@ fun part1(input: List<Line>): Int {
             for (i in intProgression) {
                 diagram[it.beginning.second][i]++
             }
-        }
-    }
-
-    return diagram.sumOf { x -> x.count { it >= 2 } }
-}
-
-
-fun part2(input: List<Line>): Int {
-    val diagram = initializeDiagram(
-        maxOf(input.maxOf { it.beginning.first },
-            input.maxOf { it.beginning.second },
-            input.maxOf { it.end.first },
-            input.maxOf { it.end.second })
-    )
-    input.forEach {
-        if (it.beginning.first == it.end.first) {
-            val intProgression = if (it.beginning.second > it.end.second) it.beginning.second.downTo(it.end.second) else it.beginning.second.rangeTo(it.end.second)
-            for (i in intProgression) {
-                diagram[i][it.beginning.first]++
-            }
-        } else if (it.beginning.second == it.end.second) {
-            val intProgression = if (it.beginning.first > it.end.first) it.beginning.first.downTo(it.end.first) else it.beginning.first.rangeTo(it.end.first)
-            for (i in intProgression) {
-                diagram[it.beginning.second][i]++
-            }
-        } else {
+        } else if (considerDiagonalLines) {
             val xCoordinates = (if (it.beginning.second > it.end.second) it.beginning.second.downTo(it.end.second) else it.beginning.second.rangeTo(it.end.second)).toMutableList()
             val yCoordinates = (if (it.beginning.first > it.end.first) it.beginning.first.downTo(it.end.first) else it.beginning.first.rangeTo(it.end.first)).toMutableList()
 
