@@ -14,6 +14,10 @@ fun readInputToString(name: String) = File("src", "$name.txt").readText()
  */
 fun readInputToIntList(name: String) = readInputToStringList(name).map { it.toInt() }
 
+fun readInputLineToStringList(name: String, delimiter: String = ",") = File("src", "$name.txt").readText().trim().split(delimiter)
+
+fun readInputLineToIntList(name: String, delimiter: String = ",") = readInputLineToStringList(name, delimiter).map { it.toInt() }
+
 /**
  * Converts string to md5 hash.
  */
