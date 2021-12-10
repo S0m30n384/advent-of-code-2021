@@ -7,6 +7,8 @@ import java.security.MessageDigest
  */
 fun readInputToStringList(name: String) = File("src", "$name.txt").readLines()
 
+fun readInputToString(name: String) = File("src", "$name.txt").readText()
+
 /**
  * Reads Int lines from the given input txt file.
  */
