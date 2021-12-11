@@ -15,40 +15,32 @@ fun main() {
 
     val testInput = readInputLineToIntList("day07/Day07_test")
 
-    val part1testInputResult = part1(testInput)
+    val part1testInputResult = calculateMinimumFuelConsumption(testInput)
     check(part1testInputResult == PART1_CRITERIA) { "The result does not match the example in the description! Criteria: $PART1_CRITERIA. Result: $part1testInputResult." }
 
-    val part2testInputResult = part2(testInput)
+    val part2testInputResult = calculateMinimumFuelConsumption(testInput, true)
     check(part2testInputResult == PART2_CRITERIA) { "The result does not match the example in the description! Criteria: $PART2_CRITERIA. Result: $part2testInputResult." }
 
     val input = readInputLineToIntList("day07/Day07")
-    println(part1(input))
-    println(part2(input))
+    println(calculateMinimumFuelConsumption(input))
+    println(calculateMinimumFuelConsumption(input, true))
 }
 
 
-fun part1(input: List<Int>): Int {
+fun calculateMinimumFuelConsumption(input: List<Int>, increasingConsumption: Boolean = false): Int {
     val min = input.minOf { it }
     val max = input.maxOf { it }
 
     val fuelMap: MutableMap<Int, Int> = mutableMapOf()
 
-    for (i in min..max) {
-        fuelMap[i] = input.sumOf { abs(i - it) }
+    if (increasingConsumption) {
+        for (i in min..max) {
+            fuelMap[i] = input.sumOf { 0.rangeTo(abs(i - it)).sum() }
+        }
+    } else {
+        for (i in min..max) {
+            fuelMap[i] = input.sumOf { abs(i - it) }
+        }
     }
-
-    return fuelMap.minOf { it.value }
-}
-
-fun part2(input: List<Int>): Int {
-    val min = input.minOf { it }
-    val max = input.maxOf { it }
-
-    val fuelMap: MutableMap<Int, Int> = mutableMapOf()
-
-    for (i in min..max) {
-        fuelMap[i] = input.sumOf { 0.rangeTo(abs(i - it)).sum() }
-    }
-
     return fuelMap.minOf { it.value }
 }
